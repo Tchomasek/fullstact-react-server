@@ -1,16 +1,22 @@
-const express = require("express");
-const router = express.Router();
-const { Posts } = require("../models");
-
-router.get("/", async (req, res) => {
-  const listOfPosts = await Posts.findAll();
-  res.json(listOfPosts);
-});
-
-router.post("/", async (req, res) => {
-  const post = req.body;
-  await Posts.create(post);
-  res.json(post);
-});
-
-module.exports = router;
+module.exports = (sequelize, DataTypes) => {
+  const Posts = sequelize.define("Posts", {
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    postText: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  });
+  Posts.associate = (models) => {
+    Posts.hasMany(models.Comments, {
+      onDelete: "cascade",
+    });
+  };
+  return Posts;
+};
