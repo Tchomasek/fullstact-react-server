@@ -14,7 +14,7 @@ const completionsRouter = require("./routes/Completions");
 app.use("/completions", completionsRouter);
 
 db.sequelize.sync().then(() => {
-  app.listen(3001, () => {
+  app.listen(process.env.PORT || 3001, () => {
     console.log("Server running on port 3001");
   });
 });
