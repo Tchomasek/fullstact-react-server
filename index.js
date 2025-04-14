@@ -8,16 +8,13 @@ app.use(cors());
 const db = require("./models");
 
 // Routers
-const postRouter = require("./routes/Posts");
-app.use("/posts", postRouter);
+const taskRouter = require("./routes/Tasks");
+app.use("/tasks", taskRouter);
+const completionsRouter = require("./routes/Completions");
+app.use("/completions", completionsRouter);
 
-db.sequelize
-  .sync()
-  .then((req) => {
-    app.listen(process.env.PORT || 3001, () => {
-      console.log("Server running on port 3001");
-    });
-  })
-  .catch((err) => {
-    console.error("Unable to connect to the database:", err);
+db.sequelize.sync().then(() => {
+  app.listen(3001, () => {
+    console.log("Server running on port 3001");
   });
+});
