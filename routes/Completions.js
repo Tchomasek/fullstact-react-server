@@ -13,20 +13,25 @@ router.get("/:day", async (req, res) => {
   res.json(listOfCompletions);
 });
 
+router.get("/tasks/:task", async (req, res) => {
+  const task = req.params.task;
+  const listOfCompletions = await Completions.findAll({ where: { task } });
+  res.json(listOfCompletions);
+});
+
 router.post("/", async (req, res) => {
   const completion = req.body;
   await Completions.create(completion);
   res.json(completion);
 });
 
-router.delete("/:activity/:day", async (req, res) => {
-  const activity = req.params.activity;
+router.delete("/:task/:day", async (req, res) => {
+  const task = req.params.task;
   const day = req.params.day;
-  console.log("activity, day", activity, day);
 
   await Completions.destroy({
     where: {
-      activity: activity,
+      task,
       date: day,
     },
   });
